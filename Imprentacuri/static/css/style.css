@@ -268,13 +268,6 @@ ul{
     }
 }
 
-.container-contacto {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f5f5f5;
-}
 
 .card {
     width: 100%;  /* Deja que ocupe todo el ancho disponible */
@@ -286,11 +279,36 @@ ul{
     flex-direction: row; /* Asegura que los elementos estén en una fila */
     justify-content: space-between; /* Espacio entre las cajas */
 }
-
-.info {
+/* contacto */
+.contactanos-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centra verticalmente */
+    align-items: center;     /* Centra horizontalmente */
+    height: 81vh;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background-color: white;
+}
+.contactanos-container h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.content {
+    display: flex;
+    gap: 20px;
+}
+.info, .map {
     flex: 1;
     padding: 20px;
 }
+
+.info h2, .map h2 {
+    margin-bottom: 10px;
+}
+
 .info h2 {
     font-size: 24px;
     font-weight: bold;
@@ -299,6 +317,7 @@ ul{
     font-weight: 700;
     font-style: normal;
 }
+
 .info p {
     font-size: 16px;
     margin-bottom: 8px;
@@ -306,15 +325,11 @@ ul{
     font-weight: 400;
     font-style: normal;
 }
-.map {
-    flex: 1;
-    padding: 20px;
-}
 
 body.contact-page {
     display: flex;
     flex-direction: column;
-    min-height: 100vh; /* Hace que el cuerpo ocupe al menos toda la altura de la ventana */
+    min-height: 100vh; 
 }
 
 .container-contacto {
@@ -336,3 +351,6 @@ body.contact-page .footer {
     color: #333;        /* Color del texto */
 }
 
+body {
+    background-color: #c7c7c7d3;
+}
