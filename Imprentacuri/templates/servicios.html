@@ -1,0 +1,132 @@
+<!-- Imprentacuri/templates/index.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imprenta curi</title>
+
+    <!--Bootstrap css and js -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital@1&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
+
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+
+</head>
+
+<body>
+    <header>
+        <!-- navbar -->
+        <nav class="navbar navbar-expand-lg fixed-top">
+            <div class="container">
+                <a class="navbar-brand me-auto" href="#">
+                    <img src="{% static 'images/logo.png' %}" alt="Imprenta Curi" height="40">
+                </a>
+
+                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
+                    aria-labelledby="offcanvasNavbarLabel">
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">LOGO</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                        <ul class="navbar-nav justify-content-center flex-grow-1 pe-3">
+                            <li class="nav-item">
+                              <a class="nav-link mx-lg-2" aria-current="page" href="{% url 'index' %}">Inicio</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link mx-lg-2" href="{% url 'productos' %}">Productos</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link mx-lg-2 active" href="{% url 'servicios' %}">Servicios</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link mx-lg-2" href="{% url 'contacto' %}">Contacto</a>
+                            </li>
+                          </ul>
+                    </div>
+                </div>
+                <a href="{% url 'login' %}" class="login-button">login</a>
+                <button class="navbar-toggler pe-0" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+        </nav>
+        <!-- end navbar -->
+    </header>
+
+
+    <main>
+        <h1>servicios</h1>
+        <p>Contenido relacionado a los servicios...</p>
+    </main>
+
+
+    <footer class="footer">
+        <div class="container-footer">
+            <div class="row">
+
+                <div class="footer-col">
+                    <h4>COMPAÑIA</h4>
+                    <ul>
+                        <li><a href="#">Ignacion Acevedo</a></li>
+                        <li><a href="#">Erick Gomez</a></li>
+                        <li><a href="#">Tomas Gonzales</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>CONTACTENOS </h4>
+                    <ul>
+                        <li><a href="#">(562) 2739 7600</a></li>
+                        <li><a href="#">San Isidro 1952,Santiago</a></li>
+                        <li><a href="#">Lunes a Viernes 8:00 a 16:30 hrs.</a></li>
+                    </ul>
+                    </ul>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4> INFORMACION </h4>
+                    <ul>
+                        <li><a href="#">Preguntas Frecuentes </a></li>
+                        <li><a href="#">Términos y Condiciones de Uso </a></li>
+                        <li><a href="#">Política de Privacidad </a></li>
+
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>SIGUENOS EN</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </footer>
+
+</body>
+
+</html>
