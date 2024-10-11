@@ -19,6 +19,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital@1&display=swap" rel="stylesheet">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,100&display=swap" rel="stylesheet">
+
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
 
@@ -71,11 +75,36 @@
         <!-- end navbar -->
     </header>
 
-
-    <main>
-        <h1>servicios</h1>
-        <p>Contenido relacionado a los servicios...</p>
-    </main>
+    <body class="servicios-page">
+        <div class="container-nosotros">
+            <div class="left">
+                <h1>Impresión digital y offset</h1>
+                <p>Ofrecemos soluciones de impresión adaptadas a tus necesidades, desde tiradas </p>
+                <p>pequeñas para proyectos específicos hasta grandes volúmenes para campañas más</p>
+                <p>amplias. Ya sea que necesites flyers, posters, o material promocional, contamos con</p>
+                <p>la tecnología y experiencia para garantizar resultados de alta calidad.</p>
+                <button class="button">Contactenos</button>
+            </div>
+            <div class="right">
+                <img src="{% static 'images/image1.jpg' %}"  style="animation: fadeAnim 9s infinite;">
+                <img src="{% static 'images/image2.jpg' %}"  style="animation: fadeAnim 9s infinite 3s;">
+                <img src="{% static 'images/image13.jpg' %}"  style="animation: fadeAnim 9s infinite 6s;">
+            </div>
+        </div>
+    
+        <script>
+            const images = document.querySelectorAll('.right img');
+            let current = 0;
+    
+            function changeImage() {
+                images[current].style.opacity = 0;  // Ocultar la imagen actual
+                current = (current + 1) % images.length; // Cambiar a la siguiente imagen
+                images[current].style.opacity = 1;  // Mostrar la nueva imagen
+            }
+    
+            setInterval(changeImage, 3000); // Cambiar cada 3 segundos
+        </script>
+    </body>
 
 
     <footer class="footer">

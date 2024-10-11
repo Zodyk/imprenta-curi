@@ -254,14 +254,14 @@ ul{
     background-color: #ffffff;
 }
 
-@media (max-width: 767px;){
+@media (max-width: 767px){
     .footer-col{
         width: 50%;
         margin-bottom: 30px;
     }
 }
 
-@media (max-width: 574px;){
+@media (max-width: 574px){
     .footer-col{
         width: 100%;
         margin-bottom: 30px;
@@ -353,4 +353,106 @@ body.contact-page .footer {
 
 body {
     background-color: #c7c7c7d3;
+}
+
+/*nosotros*/
+body.servicios-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ocupa al menos toda la ventana */
+    justify-content: center; /* Centra verticalmente */
+    align-items: center; /* Centra horizontalmente */
+    padding-top: 150px; /* Añade espacio para evitar que el contenido toque los bordes */
+}
+
+
+
+body.servicios-page .footer {
+    margin-top: auto; /* Empuja el footer al final */
+    position: relative;
+    left: 0;
+    width: 100%;
+}
+
+.container-nosotros {
+    width: 80%;
+    height: auto;
+    max-width: 1200px;  
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between; /* Asegura que los elementos internos se alineen correctamente */
+}
+
+.container-nosotros {
+    flex: 1; 
+}
+
+.left {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.left h1,.left h2 {
+    margin-bottom: 10px;
+}
+
+.left h1{
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 16px;
+    font-family: "Roboto", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+.left p{
+    font-size: 16px;
+    margin-bottom: 8px;
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.right {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+}
+
+.right img {
+    width: 100%;
+    height: 100%;
+    padding: 80px;
+    object-fit: cover;
+    position: absolute;
+    transition: opacity 0.5s ease;
+}
+
+
+.button {
+    font-family: "Roboto", sans-serif;
+    margin-top: 20px;
+    padding: 10px 20px;
+    color: white;
+    background-color: #00b383;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.button:hover {
+    background-color: black;
+}
+
+/* Animación para cambiar imágenes */
+@keyframes fadeAnim {
+    0% { opacity: 0; }
+    50% { opacity: 1; }
+    100% { opacity: 0; }
 }
