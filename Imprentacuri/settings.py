@@ -37,7 +37,21 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'usuarios',
 ]
+AUTH_USER_MODEL = 'usuarios.Usuario'
+
+# Duración de la sesión en segundos (30 días en este caso)
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 30  # 30 días
+
+# Mantener la sesión activa incluso después de cerrar el navegador
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
+AUTHENTICATION_BACKENDS = [
+    'usuarios.backends.EmailBackend',  # Backend personalizado
+    'django.contrib.auth.backends.ModelBackend',  # Backend predeterminado
+]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -75,13 +89,17 @@ WSGI_APPLICATION = 'Imprentacuri.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'imprentacuri',  
+        'USER': 'root', 
+        'PASSWORD': '1234',
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators

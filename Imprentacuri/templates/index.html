@@ -30,50 +30,65 @@
 
 <body>
   <header>
-  <!-- navbar -->
-  <nav class="navbar navbar-expand-lg fixed-top">
-    <div class="container">
-      <a class="navbar-brand me-auto" href="#">
-        <img src="{% static 'images/logo.png' %}" alt="Imprenta Curi" height="40">
-      </a>
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+      <div class="container">
+        <a class="navbar-brand me-auto" href="#">
+          <img src="{% static 'images/logo.png' %}" alt="Imprenta Curi" height="40">
+        </a>
 
-      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-        <div class="offcanvas-header">
-          <h5 class="offcanvas-title" id="offcanvasNavbarLabel">LOGO</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">LOGO</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <ul class="navbar-nav justify-content-center flex-grow-1 pe-3">
+              <li class="nav-item">
+                <a class="nav-link mx-lg-2 active" aria-current="page" href="{% url 'index' %}">Inicio</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link mx-lg-2" href="{% url 'productos' %}">Productos</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link mx-lg-2" href="{% url 'servicios' %}">Servicios</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link mx-lg-2" href="{% url 'contacto' %}">Contacto</a>
+              </li>
+              {% if user.is_authenticated %}
+              <li class="nav-item">
+                <a class="nav-link mx-lg-2" href="{% url 'perfil' %}">
+                  Hola, {{ user.username }}
+                </a>
+              </li>
+              {% else %}
+              <!-- Mostrar la opción de login si no está autenticado -->
+              <li class="nav-item">
+
+              </li>
+              {% endif %}
+            </ul>
+          </div>
         </div>
-        <div class="offcanvas-body">
-          <ul class="navbar-nav justify-content-center flex-grow-1 pe-3">
-            <li class="nav-item">
-              <a class="nav-link mx-lg-2 active" aria-current="page" href="{% url 'index' %}">Inicio</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link mx-lg-2" href="{% url 'productos' %}">Productos</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link mx-lg-2" href="{% url 'servicios' %}">Servicios</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link mx-lg-2" href="{% url 'contacto' %}">Contacto</a>
-            </li>
-          </ul>
-        </div>
+        {% if not user.is_authenticated %}
+        <a href="{% url 'login' %}" class="login-button">Login</a>
+        {% endif %}
+        <button class="navbar-toggler pe-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+          aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
       </div>
-      <a href="{% url 'login' %}" class="login-button">login</a>
-      <button class="navbar-toggler pe-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
-        aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-    </div>
-  </nav>
-  <!-- end navbar -->
+    </nav>
+    <!-- end navbar -->
   </header>
 
   <!-- hero section -->
   <section class="hero-section">
     <div class="video-container"><video autoplay loop muted playsinline>
-         <source src="{% static 'video/menu-video.mp4' %}" type="video/mp4"></video>
-   </div>
+        <source src="{% static 'video/menu-video.mp4' %}" type="video/mp4">
+      </video>
+    </div>
 
     <div class="container d-flex align-items-center justify-content-center fs-1 text-white flex-column noto-serif">
       <h1 id="typewriter1"></h1>
@@ -114,42 +129,42 @@
 
         <div class="footer-col">
           <h4>COMPAÑIA</h4>
-            <ul>
-              <li><a href="#">Ignacion Acevedo</a></li>
-              <li><a href="#">Erick Gomez</a></li>
-              <li><a href="#">Tomas Gonzales</a></li>
-            </ul>
+          <ul>
+            <li><a href="#">Ignacio Acevedo</a></li>
+            <li><a href="#">Erick Gomez</a></li>
+            <li><a href="#">Tomas Gonzales</a></li>
+          </ul>
         </div>
 
         <div class="footer-col">
           <h4>CONTACTENOS </h4>
-            <ul>
-              <li><a href="#">(562) 2739 7600</a></li>
-              <li><a href="#">San Isidro 1952,Santiago</a></li>
-              <li><a href="#">Lunes a Viernes 8:00 a 16:30 hrs.</a></li>
-            </ul>
-            </ul>
-            </ul>
+          <ul>
+            <li><a href="#">(562) 2739 7600</a></li>
+            <li><a href="#">San Isidro 1952,Santiago</a></li>
+            <li><a href="#">Lunes a Viernes 8:00 a 16:30 hrs.</a></li>
+          </ul>
+          </ul>
+          </ul>
         </div>
 
         <div class="footer-col">
           <h4> INFORMACION </h4>
-            <ul>
-              <li><a href="#">Preguntas Frecuentes </a></li>
-              <li><a href="#">Términos y Condiciones de Uso </a></li>
-              <li><a href="#">Política de Privacidad </a></li>
+          <ul>
+            <li><a href="#">Preguntas Frecuentes </a></li>
+            <li><a href="#">Términos y Condiciones de Uso </a></li>
+            <li><a href="#">Política de Privacidad </a></li>
 
-            </ul>
+          </ul>
         </div>
 
         <div class="footer-col">
           <h4>SIGUENOS EN</h4>
-            <div class="social-links">
-              <a href="#"><i class="fab fa-facebook-f"></i></a>
-              <a href="#"><i class="fab fa-twitter"></i></a>
-              <a href="#"><i class="fab fa-instagram"></i></a>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
 
-            </div>
+          </div>
         </div>
 
       </div>

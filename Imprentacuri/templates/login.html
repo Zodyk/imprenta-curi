@@ -47,21 +47,23 @@
                     <div class="offcanvas-body">
                         <ul class="navbar-nav justify-content-center flex-grow-1 pe-3">
                             <li class="nav-item">
-                              <a class="nav-link mx-lg-2 " aria-current="page" href="{% url 'index' %}">Inicio</a>
+                                <a class="nav-link mx-lg-2 " aria-current="page" href="{% url 'index' %}">Inicio</a>
                             </li>
                             <li class="nav-item">
-                              <a class="nav-link mx-lg-2" href="{% url 'productos' %}">Productos</a>
+                                <a class="nav-link mx-lg-2" href="{% url 'productos' %}">Productos</a>
                             </li>
                             <li class="nav-item">
-                              <a class="nav-link mx-lg-2" href="{% url 'servicios' %}">Servicios</a>
+                                <a class="nav-link mx-lg-2" href="{% url 'servicios' %}">Servicios</a>
                             </li>
                             <li class="nav-item">
-                              <a class="nav-link mx-lg-2" href="{% url 'contacto' %}">Contacto</a>
+                                <a class="nav-link mx-lg-2" href="{% url 'contacto' %}">Contacto</a>
                             </li>
-                          </ul>
+                        </ul>
                     </div>
                 </div>
-                <a href="{% url 'login' %}" class="login-button">login</a>
+                {% if not user.is_authenticated %}
+                <a href="{% url 'login' %}" class="login-button">Login</a>
+                {% endif %}
                 <button class="navbar-toggler pe-0" type="button" data-bs-toggle="offcanvas"
                     data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -71,11 +73,88 @@
         <!-- end navbar -->
     </header>
 
+    <div id="custom-body">
 
-    <main>
-        <h1>login</h1>
-        <p>Contenido relacionado a los login...</p>
-    </main>
+        <div class="main-login">
+            <input type="checkbox" id="chk" aria-hidden="true">
+            <div class="signup">
+                <form method="POST" action="{% url 'registro' %}">
+                    {% csrf_token %}
+                    <label for="chk" aria-hidden="true">Regístrate</label>
+                    <input type="text" name="username" placeholder="Nombre de usuario" required>
+                    <input type="email" name="email" placeholder="Correo electrónico" required>
+                    <input type="password" name="password" placeholder="Contraseña" required>
+                    <button type="submit">Regístrate</button>
+                
+                    <!-- Contenedor para mensajes -->
+                    {% if messages %}
+                        <div class="messages">
+                            {% for message in messages %}
+                                <p style="color: red;">{{ message }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </form>
+
+            </div>
+
+            <div class="login">
+
+                <form id="login-form">
+                    {% csrf_token %}
+                    <label for="chk" aria-hidden="true">Inicia sesión</label>
+                    <input type="email" name="email" placeholder="Email" required>
+                    <input type="password" name="password" placeholder="Password" required>
+                    <button type="submit">Inicia sesión</button>
+
+                    <!-- Mensajes de error dinámicos -->
+                    <div class="messages" id="error-message" style="display: none;">
+                        <p style="color: red;"></p>
+                    </div>
+                </form>
+
+                <script>
+                    document.getElementById('login-form').addEventListener('submit', async function (e) {
+                        e.preventDefault(); // Evitar la recarga de la página
+
+                        const formData = new FormData(this);
+                        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+                        try {
+                            const response = await fetch("{% url 'login' %}", {
+                                method: 'POST',
+                                headers: {
+                                    'X-CSRFToken': csrfToken
+                                },
+                                body: formData
+                            });
+
+                            const data = await response.json();
+
+                            if (data.success) {
+                                // Redirigir si el login es exitoso
+                                window.location.href = data.redirect;
+                            } else {
+                                // Mostrar mensaje de error
+                                const errorDiv = document.getElementById('error-message');
+                                errorDiv.style.display = 'block';
+                                errorDiv.querySelector('p').textContent = data.message;
+                            }
+                        } catch (error) {
+                            console.error("Error en la solicitud:", error);
+                        }
+                    });
+                </script>
+
+
+
+
+
+            </div>
+
+        </div>
+
+    </div>
 
 
     <footer class="footer">
@@ -85,7 +164,7 @@
                 <div class="footer-col">
                     <h4>COMPAÑIA</h4>
                     <ul>
-                        <li><a href="#">Ignacion Acevedo</a></li>
+                        <li><a href="#">Ignacio Acevedo</a></li>
                         <li><a href="#">Erick Gomez</a></li>
                         <li><a href="#">Tomas Gonzales</a></li>
                     </ul>
