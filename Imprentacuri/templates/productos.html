@@ -1,4 +1,3 @@
-<!-- Imprentacuri/templates/index.html -->
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -6,140 +5,550 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Imprenta curi</title>
-
-    <!--Bootstrap css and js -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital@1&display=swap" rel="stylesheet">
-
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
-
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
-
-    <link href="{% static 'css/style.css' %}" rel="stylesheet">
-
-
+    <title>Product Display Section</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="{% static 'css/producto.css' %}" rel="stylesheet">
 </head>
 
 <body>
-    <header>
-        <!-- navbar -->
-        <nav class="navbar navbar-expand-lg fixed-top">
-            <div class="container">
-                <a class="navbar-brand me-auto" href="#">
-                    <img src="{% static 'images/logo.png' %}" alt="Imprenta Curi" height="40">
-                </a>
 
-                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
-                    aria-labelledby="offcanvasNavbarLabel">
-                    <div class="offcanvas-header">
-                        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">LOGO</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                    </div>
-                    <div class="offcanvas-body">
-                        <ul class="navbar-nav justify-content-center flex-grow-1 pe-3">
-                            <li class="nav-item">
-                                <a class="nav-link mx-lg-2" aria-current="page" href="{% url 'index' %}">Inicio</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link mx-lg-2 active" href="{% url 'productos' %}">Productos</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link mx-lg-2" href="{% url 'servicios' %}">Servicios</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link mx-lg-2" href="{% url 'contacto' %}">Contacto</a>
-                            </li>
-                            {% if user.is_authenticated %}
-                            <li class="nav-item">
-                                <a class="nav-link mx-lg-2" href="{% url 'perfil' %}">
-                                    Hola, {{ user.username }}
-                                </a>
-                            </li>
-                            {% else %}
-                            <!-- Mostrar la opción de login si no está autenticado -->
-                            <li class="nav-item">
+    <!-- Incluir el header -->
+    {% include 'header.html' %}
 
-                            </li>
-                            {% endif %}
-                        </ul>
+
+
+    <div id="productos-section">
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+        <!-- Shopping Cart Icon with Badge -->
+        <div class="shopping-cart-icon position-fixed">
+            <button class="btn btn-primary rounded-circle p-3" data-bs-toggle="modal" data-bs-target="#cartModal">
+                <i class="bi bi-cart3 fs-4"></i>
+                <span id="cart-count" class="badge bg-primary rounded-pill">0</span>
+
+
+            </button>
+        </div>
+
+        <div class="container py-5">
+            <div class="row g-4">
+
+                {% if productos %}
+                {% for producto in productos %}
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card product-card h-100">
+                        <!-- Imagen del producto -->
+                        <img src="{{ producto.imagen.url }}" class="card-img-top" alt="{{ producto.nombre }}"
+                            loading="lazy" style="cursor: pointer;" data-bs-toggle="modal"
+                            data-bs-target="#quickViewModal" data-nombre="{{ producto.nombre }}"
+                            data-imagen="{{ producto.imagen.url }}" data-sku="{{ producto.sku }}"
+                            data-descripcion="{{ producto.descripcion }}" data-stock="{{ producto.stock }}"
+                            data-precio="{{ producto.precio }}" data-categoria="{{ producto.categoria }}">
+
+                        <div class="card-body d-flex flex-column">
+                            <!-- Título del producto -->
+                            <h5 class="card-title" data-bs-toggle="modal" data-bs-target="#quickViewModal"
+                                data-nombre="{{ producto.nombre }}" data-imagen="{{ producto.imagen.url }}"
+                                data-sku="{{ producto.sku }}" data-descripcion="{{ producto.descripcion }}"
+                                data-stock="{{ producto.stock }}" data-precio="{{ producto.precio }}"
+                                data-categoria="{{ producto.categoria }}" style="cursor: pointer;">
+                                {{ producto.nombre }}
+                            </h5>
+                            <!-- Descripción -->
+                            <p class="card-text text-muted">{{ producto.descripcion }}</p>
+                            <div class="d-flex justify-content-between align-items-center mt-auto">
+                                <!-- Precio -->
+                                <span class="price">${{ producto.precio }}</span>
+                                <!-- Botón para agregar al carrito -->
+                                <button class="btn btn-primary add-to-cart" data-id="{{ producto.id }}">Agregar al
+                                    Carrito</button>
+
+                            </div>
+                        </div>
                     </div>
                 </div>
-                {% if not user.is_authenticated %}
-                <a href="{% url 'login' %}" class="login-button">Login</a>
+
+                {% endfor %}
+                {% else %}
+                <p>No hay productos disponibles en este momento.</p>
                 {% endif %}
-                <button class="navbar-toggler pe-0" type="button" data-bs-toggle="offcanvas"
-                    data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-            </div>
-        </nav>
-        <!-- end navbar -->
-    </header>
 
 
-    <main>
-        <h1>productos</h1>
-        <p>Contenido relacionado a los productos...</p>
-    </main>
-
-
-    <footer class="footer">
-        <div class="container-footer">
-            <div class="row">
-
-                <div class="footer-col">
-                    <h4>COMPAÑIA</h4>
-                    <ul>
-                        <li><a href="#">Ignacio Acevedo</a></li>
-                        <li><a href="#">Erick Gomez</a></li>
-                        <li><a href="#">Tomas Gonzales</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-col">
-                    <h4>CONTACTENOS </h4>
-                    <ul>
-                        <li><a href="#">(562) 2739 7600</a></li>
-                        <li><a href="#">San Isidro 1952,Santiago</a></li>
-                        <li><a href="#">Lunes a Viernes 8:00 a 16:30 hrs.</a></li>
-                    </ul>
-                    </ul>
-                    </ul>
-                </div>
-
-                <div class="footer-col">
-                    <h4> INFORMACION </h4>
-                    <ul>
-                        <li><a href="#">Preguntas Frecuentes </a></li>
-                        <li><a href="#">Términos y Condiciones de Uso </a></li>
-                        <li><a href="#">Política de Privacidad </a></li>
-
-                    </ul>
-                </div>
-
-                <div class="footer-col">
-                    <h4>SIGUENOS EN</h4>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-
-                    </div>
-                </div>
 
             </div>
         </div>
 
-    </footer>
+        <!-- Mensaje de confirmación -->
+<div id="mensaje-compra" class="alert alert-success d-none text-center mt-3" role="alert">
+    ¡Compra realizada con éxito!
+</div>
+
+        <!-- Shopping Cart Modal -->
+        <div class="modal fade" id="cartModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Shopping Cart</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+
+                        <div class="cart-items">
+                            {% if carrito %}
+                            {% for key, item in carrito.items %}
+                            <div class="cart-item d-flex align-items-center mb-3 p-3 bg-light rounded"
+                                data-id="{{ key }}">
+                                <img src="{{ item.imagen }}" class="cart-item-image me-3" alt="{{ item.nombre }}">
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-0">{{ item.nombre }}</h6>
+                                    <p class="text-muted mb-0">$ {{ item.precio }}</p>
+                                </div>
+                                <div class="quantity-controls d-flex align-items-center me-3">
+                                    <button class="btn btn-sm btn-outline-secondary">-</button>
+                                    <span class="quantity mx-2">{{ item.cantidad }}</span>
+                                    <button class="btn btn-sm btn-outline-secondary">+</button>
+                                </div>
+                                <button class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
+                            </div>
+
+                            {% endfor %}
+                            {% else %}
+                            <p>No hay productos en el carrito.</p>
+                            {% endif %}
+                        </div>
+
+                        <div class="cart-summary mt-4">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Subtotal:</span>
+                                <span class="cart-subtotal">$0.00</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Envío:</span>
+                                <span class="cart-envio">$7000</span>
+                            </div>
+                            <div class="d-flex justify-content-between fw-bold">
+                                <span>Total:</span>
+                                <span class="cart-total">$0.00</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Seguir Comprando
+                        </button>
+                        {% if user.is_authenticated %}
+                        
+                        <button id="checkout-btn" class="btn btn-primary" onclick="mostrarMensajeCompra()">Proceder Compra</button>
+
+                        <div class="alert alert-success d-none" id="compra-exitosa" role="alert">
+                                ¡Compra realizada con éxito!
+                        </div>
+                            
+
+                        {% else %}
+                        <p class="text-danger">Inicia sesión para proceder al pago.</p>
+                        <a href="{% url 'login' %}" class="btn btn-outline-primary">Iniciar Sesión</a>
+                        {% endif %}
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick View Modal listo -->
+        <div class="modal fade" id="quickViewModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Detalle del Producto</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <!-- Imagen del producto -->
+                            <div class="col-md-6">
+                                <img src="" class="img-fluid" alt="Imagen del Producto">
+                            </div>
+                            <div class="col-md-6">
+                                <!-- Nombre del producto -->
+                                <h4>Detalles</h4>
+                                <!-- SKU -->
+                                <p class="modal-sku text-muted">SKU:</p>
+                                <!-- Descripción -->
+                                <p class="modal-descripcion">Descripción...</p>
+                                <!-- Stock -->
+                                <p class="modal-stock">Stock:</p>
+                                <!-- Precio -->
+                                <h5 class="modal-precio">$0.00</h5>
+                                <!-- Categoría -->
+                                <p class="modal-categoria">Categoría:</p>
+                                <!-- Botón para agregar al carrito -->
+                                <button class="btn btn-primary add-to-cart-modal" data-id="" data-nombre="">Agregar al
+                                    Carrito</button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        
+
+
+
+        <!-- Add to Cart Modal -->
+        <div class="modal fade" id="addToCartModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">¡Éxito!</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Producto agregado al carrito correctamente.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Seguir
+                            Comprando</button>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#cartModal">
+                            Ver Carrito
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <script>
+            function mostrarMensajeCompra() {
+                const mensajeCompra = document.getElementById('mensaje-compra');
+                mensajeCompra.classList.remove('d-none'); // Muestra el mensaje
+                setTimeout(() => {
+                    mensajeCompra.classList.add('d-none'); // Oculta el mensaje tras 3 segundos
+                }, 3000);
+            }
+        </script>
+        <script>
+            document.getElementById('checkout-btn').addEventListener('click', () => {
+                fetch('/procesar-compra/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        mostrarMensajeCompra();
+                        actualizarCarrito(); // Actualizar carrito después de la compra
+                    } else {
+                        alert(data.message || 'Error al procesar la compra.');
+                    }
+                })
+                .catch(error => console.error('Error al procesar la compra:', error));
+            });
+        
+            function actualizarCarrito() {
+                const cartItemsContainer = document.querySelector('.cart-items');
+                const cartCountElement = document.getElementById('cart-count');
+        
+                // Vaciar el carrito visualmente
+                cartItemsContainer.innerHTML = '<p>No hay productos en el carrito.</p>';
+                cartCountElement.textContent = 0;
+        
+                // Actualizar totales
+                document.querySelector('.cart-subtotal').textContent = '$0.00';
+                document.querySelector('.cart-total').textContent = '$0.00';
+            }
+        </script>
+        
+
+
+        <script>
+
+document.addEventListener('DOMContentLoaded', () => {
+    const checkoutButton = document.getElementById('checkout-btn');
+    const checkoutModal = new bootstrap.Modal(document.getElementById('checkoutModal'));
+
+    checkoutButton.addEventListener('click', async () => {
+        try {
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            const response = await fetch('/procesar-compra/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken,
+                },
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                document.getElementById('checkout-success-message').textContent = data.message; // Mostrar mensaje del servidor
+                checkoutModal.show(); // Mostrar el modal
+            } else {
+                console.error('Error al procesar la compra.');
+                alert('Hubo un problema al procesar la compra.');
+            }
+        } catch (error) {
+            console.error('Error al conectar con el servidor:', error);
+            alert('Hubo un problema al conectar con el servidor.');
+        }
+    });
+});
+
+
+
+        </script>
+
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const addToCartModal = new bootstrap.Modal(document.getElementById('addToCartModal'));
+                const cartItemsContainer = document.querySelector('.cart-items');
+                const subtotalElement = document.querySelector('.cart-subtotal');
+                const envioElement = document.querySelector('.cart-envio');
+                const totalElement = document.querySelector('.cart-total');
+                const envioCosto = 7000; // Envío fijo de 7000 pesos chilenos
+                const cartCountElement = document.getElementById('cart-count'); // Badge del contador
+
+                // **Quick View Modal**: Mostrar detalles del producto seleccionado
+                const quickViewModal = document.getElementById('quickViewModal');
+                quickViewModal.addEventListener('show.bs.modal', function (event) {
+                    const triggerElement = event.relatedTarget;
+
+                    // Obtener datos del producto
+                    const nombre = triggerElement.getAttribute('data-nombre');
+                    const imagen = triggerElement.getAttribute('data-imagen');
+                    const sku = triggerElement.getAttribute('data-sku');
+                    const descripcion = triggerElement.getAttribute('data-descripcion');
+                    const stock = triggerElement.getAttribute('data-stock');
+                    const precio = triggerElement.getAttribute('data-precio');
+                    const categoria = triggerElement.getAttribute('data-categoria');
+
+                    // Actualizar contenido del modal
+                    quickViewModal.querySelector('.modal-title').textContent = nombre;
+                    quickViewModal.querySelector('.modal-body img').src = imagen;
+                    quickViewModal.querySelector('.modal-sku').textContent = `SKU: ${sku}`;
+                    quickViewModal.querySelector('.modal-descripcion').textContent = descripcion;
+                    quickViewModal.querySelector('.modal-stock').textContent = `Stock: ${stock}`;
+                    quickViewModal.querySelector('.modal-precio').textContent = `$${precio}`;
+                    quickViewModal.querySelector('.modal-categoria').textContent = `Categoría: ${categoria}`;
+
+                    // Configurar el botón "Agregar al Carrito" dentro del modal
+                    const modalAddToCartButton = quickViewModal.querySelector('.add-to-cart-modal');
+                    modalAddToCartButton.setAttribute('data-id', triggerElement.getAttribute('data-id'));
+                    modalAddToCartButton.onclick = async function () {
+                        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+                        try {
+                            const response = await fetch('/carrito/agregar/', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRFToken': csrfToken,
+                                },
+                                body: JSON.stringify({ producto_id: modalAddToCartButton.getAttribute('data-id') }),
+                            });
+
+                            if (response.ok) {
+                                addToCartModal.show(); // Mostrar modal de éxito
+                                actualizarCarrito(); // Actualizar el carrito
+                            } else {
+                                console.error('Error al agregar el producto al carrito.');
+                            }
+                        } catch (error) {
+                            console.error('Error al conectar con el servidor:', error);
+                        }
+                    };
+                });
+
+                // **Función para actualizar el carrito y el contador**
+                async function actualizarCarrito() {
+                    try {
+                        const response = await fetch('/carrito/ver/');
+                        if (response.ok) {
+                            const data = await response.json();
+                            const carrito = data.carrito;
+
+                            let subtotal = 0;
+                            let totalProductos = 0; // Contador para el badge
+
+                            // Limpiar contenido previo del carrito
+                            cartItemsContainer.innerHTML = '';
+
+                            // Agregar elementos del carrito
+                            Object.keys(carrito).forEach(key => {
+                                const item = carrito[key];
+                                subtotal += parseFloat(item.precio) * item.cantidad; // Calcular subtotal
+                                totalProductos += item.cantidad; // Sumar cantidad al total
+
+                                const cartItemHTML = `
+                            <div class="cart-item d-flex align-items-center mb-3 p-3 bg-light rounded" data-id="${key}">
+                                <img src="${item.imagen}" class="cart-item-image me-3" alt="${item.nombre}">
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-0">${item.nombre}</h6>
+                                    <p class="text-muted mb-0">$${item.precio}</p>
+                                </div>
+                                <div class="quantity-controls d-flex align-items-center me-3">
+                                    <button class="btn btn-sm btn-outline-secondary btn-decrement">-</button>
+                                    <span class="quantity mx-2">${item.cantidad}</span>
+                                    <button class="btn btn-sm btn-outline-secondary btn-increment">+</button>
+                                </div>
+                                <button class="btn btn-danger btn-sm btn-remove"><i class="bi bi-trash"></i></button>
+                            </div>
+                        `;
+                                cartItemsContainer.insertAdjacentHTML('beforeend', cartItemHTML);
+                            });
+
+                            // Actualizar badge del carrito
+                            cartCountElement.textContent = totalProductos;
+
+                            // Calcular y mostrar totales
+                            const total = subtotal + envioCosto;
+                            subtotalElement.textContent = `$${subtotal.toFixed(2)}`;
+                            envioElement.textContent = `$${envioCosto.toFixed(2)}`;
+                            totalElement.textContent = `$${total.toFixed(2)}`;
+                        } else {
+                            console.error('Error al obtener los datos del carrito.');
+                        }
+                    } catch (error) {
+                        console.error('Error al conectar con el servidor:', error);
+                    }
+                }
+                // **Botón "Agregar al Carrito" en las tarjetas**
+                document.querySelectorAll('.add-to-cart').forEach(button => {
+                    button.addEventListener('click', async function () {
+                        const productoId = this.getAttribute('data-id');
+                        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+                        try {
+                            const response = await fetch('/carrito/agregar/', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRFToken': csrfToken,
+                                },
+                                body: JSON.stringify({ producto_id: productoId }),
+                            });
+
+                            if (response.ok) {
+                                addToCartModal.show(); // Mostrar modal de éxito
+                                actualizarCarrito(); // Actualizar el carrito dinámicamente
+                            } else {
+                                console.error('Error al agregar el producto al carrito.');
+                            }
+                        } catch (error) {
+                            console.error('Error al conectar con el servidor:', error);
+                        }
+                    });
+                });
+
+                // **Manejo de botones de cantidad en el carrito**
+                cartItemsContainer.addEventListener('click', async function (event) {
+                    const target = event.target;
+                    const cartItem = target.closest('.cart-item');
+                    if (!cartItem) return;
+
+                    const productoId = cartItem.getAttribute('data-id');
+                    let cantidadActual = parseInt(cartItem.querySelector('.quantity').textContent);
+                    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+                    // Incrementar o decrementar cantidad
+                    if (target.classList.contains('btn-increment')) {
+                        cantidadActual++;
+                    } else if (target.classList.contains('btn-decrement')) {
+                        if (cantidadActual > 1) {
+                            cantidadActual--;
+                        } else {
+                            await eliminarProductoDelCarrito(productoId);
+                            cartItem.remove();
+                            actualizarCarrito(); // Actualizar badge y totales
+                            return;
+                        }
+                    } else if (target.classList.contains('btn-remove')) {
+                        // Eliminar producto del carrito
+                        await eliminarProductoDelCarrito(productoId);
+                        cartItem.remove();
+                        actualizarCarrito(); // Actualizar badge y totales
+                        return;
+                    }
+
+                    // Actualizar cantidad en el servidor
+                    try {
+                        const response = await fetch('/carrito/actualizar/', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRFToken': csrfToken,
+                            },
+                            body: JSON.stringify({ producto_id: productoId, cantidad: cantidadActual }),
+                        });
+
+                        if (response.ok) {
+                            cartItem.querySelector('.quantity').textContent = cantidadActual;
+                            actualizarCarrito(); // Actualizar badge y totales
+                        } else {
+                            console.error('Error al actualizar la cantidad del carrito.');
+                        }
+                    } catch (error) {
+                        console.error('Error al conectar con el servidor:', error);
+                    }
+                });
+
+                // **Eliminar producto del carrito**
+                async function eliminarProductoDelCarrito(productoId) {
+                    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+                    try {
+                        const response = await fetch('/carrito/eliminar/', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRFToken': csrfToken,
+                            },
+                            body: JSON.stringify({ producto_id: productoId }),
+                        });
+
+                        if (!response.ok) {
+                            console.error('Error al eliminar el producto del carrito.');
+                        }
+                    } catch (error) {
+                        console.error('Error al conectar con el servidor:', error);
+                    }
+                }
+
+                // **Limpieza automática de "backdrops"**
+                document.addEventListener('hidden.bs.modal', function () {
+                    document.querySelectorAll('.modal-backdrop').forEach(backdrop => backdrop.remove());
+                    document.body.classList.remove('modal-open');
+                    document.body.style = '';
+                });
+
+                // Llama a `actualizarCarrito` al cargar la página
+                actualizarCarrito();
+            });
+
+
+
+        </script>
+
+
+
+
+
+
+
+        <!-- Incluir el footer -->
+        {% include 'footer.html' %}
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 

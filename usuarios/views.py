@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-
+from pedidos.models import Pedido, PedidoProducto
 from django.http import JsonResponse
 
 # Vista para el registro de usuarios
@@ -49,9 +49,37 @@ def logout_view(request):
     return redirect('index')  # Redirige a la página de inicio
 
 # Vista para el perfil del usuario
+
+
 @login_required
 def perfil(request):
-    return render(request, 'perfil.html', {'usuario': request.user})
+    usuario = request.user
+    # Obtiene todos los pedidos del usuario ordenados por fecha descendente
+    pedidos = Pedido.objects.filter(cliente=usuario).order_by('-fecha')
+
+    # Generar una lista con la información de cada pedido
+    pedidos_con_productos = []
+    for pedido in pedidos:
+        # Asegúrate de obtener los productos relacionados con este pedido
+        productos = PedidoProducto.objects.filter(pedido=pedido)
+        detalles_productos = ", ".join(
+            [f"{pp.producto.nombre} (x{pp.cantidad})" for pp in productos]
+        )
+
+        pedidos_con_productos.append({
+            'id': pedido.id,
+            'fecha': pedido.fecha,
+            'total': pedido.total,
+            'productos': detalles_productos,  # Nombres y cantidades de los productos
+        })
+
+    # Renderizar la plantilla con los pedidos actualizados
+    return render(request, 'perfil.html', {
+        'usuario': usuario,
+        'pedidos': pedidos_con_productos,
+    })
+
+
 
 
 

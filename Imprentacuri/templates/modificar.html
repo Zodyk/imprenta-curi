@@ -1,0 +1,354 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Display Section</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="{% static 'css/producto.css' %}" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Incluir el header -->
+    {% include 'header.html' %}
+
+
+    
+    <div id="productos-section">
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+        <!-- Shopping Cart Icon with Badge -->
+        <div class="shopping-cart-icon position-fixed">
+            <button class="btn btn-primary rounded-circle p-3" data-bs-toggle="modal" data-bs-target="#cartModal">
+                <i class="bi bi-cart3 fs-4"></i>
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">3</span>
+            </button>
+        </div>
+
+        <div class="container py-5">
+            <div class="row g-4">
+                <!-- Botón para abrir el modal de crear nuevo producto -->
+                <div class="d-flex justify-content-end mb-4">
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#crearProductoModal">
+                        Crear Nuevo Producto
+                    </button>
+                </div>
+        
+                {% if productos %}
+                <form method="POST" action="{% url 'modificar' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="container">
+                        <h3>Modificar Productos</h3>
+                        {% for producto in productos %}
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                Producto ID: {{ producto.id }}
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <!-- Imagen -->
+                                    <div class="col-md-3">
+                                        <img src="{{ producto.imagen.url }}" class="img-fluid" alt="{{ producto.nombre }}">
+                                        <input type="file" class="form-control mt-2" name="imagen_{{ producto.id }}">
+                                    </div>
+                                    <!-- Información del producto -->
+                                    <div class="col-md-9">
+                                        <div class="form-group">
+                                            <label>Nombre</label>
+                                            <input type="text" class="form-control" name="nombre_{{ producto.id }}" value="{{ producto.nombre }}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>SKU</label>
+                                            <input type="text" class="form-control" name="sku_{{ producto.id }}" value="{{ producto.sku }}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Descripción</label>
+                                            <textarea class="form-control" name="descripcion_{{ producto.id }}">{{ producto.descripcion }}</textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Precio</label>
+                                            <input type="number" class="form-control" name="precio_{{ producto.id }}" value="{{ producto.precio }}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Stock</label>
+                                            <input type="number" class="form-control" name="stock_{{ producto.id }}" value="{{ producto.stock }}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Categoría</label>
+                                            <input type="text" class="form-control" name="categoria_{{ producto.id }}" value="{{ producto.categoria }}">
+                                        </div>
+                                        <div class="form-group form-check">
+                                            <input type="checkbox" class="form-check-input" name="visible_{{ producto.id }}" {% if producto.visible %}checked{% endif %}>
+                                            <label class="form-check-label">Visible</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    </div>
+                </form>
+                {% else %}
+                <p>No hay productos disponibles.</p>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Modal para crear un nuevo producto -->
+        <div class="modal fade" id="crearProductoModal" tabindex="-1" aria-labelledby="crearProductoModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form method="POST" action="{% url 'crear_producto' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="crearProductoModalLabel">Crear Nuevo Producto</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Nombre</label>
+                                <input type="text" class="form-control" name="nombre" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Imagen</label>
+                                <input type="file" class="form-control" name="imagen" required>
+                            </div>
+                            <div class="form-group">
+                                <label>SKU</label>
+                                <input type="text" class="form-control" name="sku" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Descripción</label>
+                                <textarea class="form-control" name="descripcion"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Precio</label>
+                                <input type="number" class="form-control" name="precio" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Stock</label>
+                                <input type="number" class="form-control" name="stock" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Categoría</label>
+                                <input type="text" class="form-control" name="categoria" required>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="visible" id="visible" checked>
+                                <label class="form-check-label" for="visible">Visible</label>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-success">Crear Producto</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+
+
+
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const addToCartModal = new bootstrap.Modal(document.getElementById('addToCartModal'));
+                const cartItemsContainer = document.querySelector('.cart-items');
+                const subtotalElement = document.querySelector('.cart-subtotal');
+                const envioElement = document.querySelector('.cart-envio');
+                const totalElement = document.querySelector('.cart-total');
+                const envioCosto = 7000; // Envío fijo de 7000 pesos chilenos
+
+                // **Función para actualizar el carrito y los totales**
+                async function actualizarCarrito() {
+                    try {
+                        const response = await fetch('/carrito/ver/');
+                        if (response.ok) {
+                            const data = await response.json();
+                            const carrito = data.carrito;
+
+                            let subtotal = 0; // Inicializar subtotal
+
+                            // Limpiar contenido previo del carrito
+                            cartItemsContainer.innerHTML = '';
+
+                            // Agregar elementos del carrito
+                            Object.keys(carrito).forEach(key => {
+                                const item = carrito[key];
+                                subtotal += parseFloat(item.precio) * item.cantidad; // Calcular subtotal
+
+                                const cartItemHTML = `
+                        <div class="cart-item d-flex align-items-center mb-3 p-3 bg-light rounded" data-id="${key}">
+                            <img src="${item.imagen}" class="cart-item-image me-3" alt="${item.nombre}">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-0">${item.nombre}</h6>
+                                <p class="text-muted mb-0">$${item.precio}</p>
+                            </div>
+                            <div class="quantity-controls d-flex align-items-center me-3">
+                                <button class="btn btn-sm btn-outline-secondary btn-decrement">-</button>
+                                <span class="quantity mx-2">${item.cantidad}</span>
+                                <button class="btn btn-sm btn-outline-secondary btn-increment">+</button>
+                            </div>
+                            <button class="btn btn-danger btn-sm btn-remove"><i class="bi bi-trash"></i></button>
+                        </div>
+                    `;
+                                cartItemsContainer.insertAdjacentHTML('beforeend', cartItemHTML);
+                            });
+
+                            // Calcular y mostrar totales
+                            const total = subtotal + envioCosto;
+                            subtotalElement.textContent = `$${subtotal.toFixed(2)}`;
+                            envioElement.textContent = `$${envioCosto.toFixed(2)}`;
+                            totalElement.textContent = `$${total.toFixed(2)}`;
+                        } else {
+                            console.error('Error al obtener los datos del carrito.');
+                        }
+                    } catch (error) {
+                        console.error('Error al conectar con el servidor:', error);
+                    }
+                }
+
+                // **Botón "Agregar al Carrito" en las tarjetas**
+                document.querySelectorAll('.add-to-cart').forEach(button => {
+                    button.addEventListener('click', async function () {
+                        const productoId = this.getAttribute('data-id');
+                        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+                        try {
+                            const response = await fetch('/carrito/agregar/', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRFToken': csrfToken,
+                                },
+                                body: JSON.stringify({ producto_id: productoId }),
+                            });
+
+                            if (response.ok) {
+                                addToCartModal.show(); // Mostrar modal de éxito
+                                actualizarCarrito(); // Actualizar el carrito dinámicamente
+                            } else {
+                                console.error('Error al agregar el producto al carrito.');
+                            }
+                        } catch (error) {
+                            console.error('Error al conectar con el servidor:', error);
+                        }
+                    });
+                });
+
+                // **Manejo de botones de cantidad en el carrito**
+                cartItemsContainer.addEventListener('click', async function (event) {
+                    const target = event.target;
+                    const cartItem = target.closest('.cart-item');
+                    if (!cartItem) return;
+
+                    const productoId = cartItem.getAttribute('data-id');
+                    let cantidadActual = parseInt(cartItem.querySelector('.quantity').textContent);
+                    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+                    // Incrementar o decrementar cantidad
+                    if (target.classList.contains('btn-increment')) {
+                        cantidadActual++;
+                    } else if (target.classList.contains('btn-decrement')) {
+                        if (cantidadActual > 1) {
+                            cantidadActual--;
+                        } else {
+                            // Eliminar producto si la cantidad llega a 0
+                            await eliminarProductoDelCarrito(productoId);
+                            cartItem.remove();
+                            actualizarCarrito(); // Actualizar totales
+                            return;
+                        }
+                    } else if (target.classList.contains('btn-remove')) {
+                        // Eliminar producto del carrito
+                        await eliminarProductoDelCarrito(productoId);
+                        cartItem.remove();
+                        actualizarCarrito(); // Actualizar totales
+                        return;
+                    }
+
+                    // Actualizar cantidad en el servidor
+                    try {
+                        const response = await fetch('/carrito/actualizar/', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRFToken': csrfToken,
+                            },
+                            body: JSON.stringify({ producto_id: productoId, cantidad: cantidadActual }),
+                        });
+
+                        if (response.ok) {
+                            cartItem.querySelector('.quantity').textContent = cantidadActual;
+                            actualizarCarrito(); // Actualizar totales
+                        } else {
+                            console.error('Error al actualizar la cantidad del carrito.');
+                        }
+                    } catch (error) {
+                        console.error('Error al conectar con el servidor:', error);
+                    }
+                });
+
+                // **Eliminar producto del carrito**
+                async function eliminarProductoDelCarrito(productoId) {
+                    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+                    try {
+                        const response = await fetch('/carrito/eliminar/', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRFToken': csrfToken,
+                            },
+                            body: JSON.stringify({ producto_id: productoId }),
+                        });
+
+                        if (!response.ok) {
+                            console.error('Error al eliminar el producto del carrito.');
+                        }
+                    } catch (error) {
+                        console.error('Error al conectar con el servidor:', error);
+                    }
+                }
+
+                // **Limpieza automática de "backdrops"**
+                document.addEventListener('hidden.bs.modal', function () {
+                    document.querySelectorAll('.modal-backdrop').forEach(backdrop => backdrop.remove());
+                    document.body.classList.remove('modal-open');
+                    document.body.style = '';
+                });
+
+                // Llama a `actualizarCarrito` al cargar la página o al abrir el modal del carrito
+                const cartModalElement = document.getElementById('cartModal');
+                cartModalElement.addEventListener('show.bs.modal', actualizarCarrito);
+            });
+
+            document.addEventListener('DOMContentLoaded', () => {
+                const cartModalElement = document.getElementById('cartModal');
+
+                // Actualizar el contenido del carrito al abrir el modal del carrito
+                cartModalElement.addEventListener('show.bs.modal', async () => {
+                    await actualizarCarrito(); // Asegúrate de que esta función esté definida
+                });
+
+                // Otros scripts permanecen sin cambios
+            });
+
+        </script>
+
+
+
+
+
+        <!-- Incluir el footer -->
+        {% include 'footer.html' %}
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

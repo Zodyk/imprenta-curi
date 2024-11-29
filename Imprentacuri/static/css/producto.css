@@ -1,0 +1,123 @@
+#productos-section {
+    padding-top: 100px; /* Ajusta según la altura real de tu header */
+}
+
+#productos-section .product-card {
+    transition: all 0.3s ease;
+    border: none;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+#productos-section .product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+#productos-section .product-card .card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+#productos-section .price {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+#productos-section .add-to-cart {
+    transition: all 0.3s ease;
+}
+
+#productos-section .add-to-cart:hover {
+    transform: scale(1.05);
+}
+
+#productos-section .quick-view {
+    text-decoration: none;
+    color: #6c757d;
+}
+
+#productos-section .quick-view:hover {
+    color: #343a40;
+}
+
+#productos-section .card-body {
+    padding: 1.5rem;
+}
+
+#productos-section .btn-primary {
+    background-color: #3498db;
+    border-color: #3498db;
+}
+
+#productos-section .btn-primary:hover {
+    background-color: #2980b9;
+    border-color: #2980b9;
+}
+
+#productos-section .modal-content {
+    border-radius: 0.5rem;
+}
+
+#productos-section .shopping-cart-icon {
+    right: 2rem;
+    bottom: 2rem;
+    z-index: 1000;
+}
+
+#productos-section .cart-item-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 0.5rem;
+}
+
+#productos-section .cart-item {
+    transition: all 0.3s ease;
+}
+
+#productos-section .cart-item:hover {
+    transform: translateX(5px);
+}
+
+#productos-section .quantity-controls .btn {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 768px) {
+    #productos-section .product-card .card-img-top {
+        height: 250px;
+    }
+
+    #productos-section .shopping-cart-icon {
+        right: 1rem;
+        bottom: 1rem;
+    }
+
+    #productos-section .cart-item {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    #productos-section .cart-item-image {
+        margin-bottom: 1rem;
+    }
+
+    #productos-section .quantity-controls {
+        margin: 1rem 0;
+    }
+}
+
+#productos-section .product-card:focus-within {
+    outline: 2px solid #3498db;
+    outline-offset: 2px;
+}
+
+#productos-section .btn:focus {
+    box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+}

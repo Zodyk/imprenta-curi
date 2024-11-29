@@ -1,0 +1,134 @@
+#header-section .navbar {
+    background-color: #fff;
+    height: 80px;
+    margin: 20px;
+    border-radius: 16px;
+    padding: 0.5rem;
+}
+
+#header-section .navbar-brand img {
+    height: 65px;
+    width: auto;
+    max-height: none;
+}
+
+#header-section .login-button {
+    background-color: #009970;
+    color: #fff;
+    font-size: 14px;
+    padding: 8px 20px;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: 0.3s background-color;
+}
+#header-section .login-button:hover {
+    background-color: #00b383;
+}
+
+#header-section .navbar-toggler {
+    border: none;
+    font-size: 1.25rem;
+}
+
+#header-section .navbar-toggler:focus, 
+#header-section .btn-close:focus {
+    box-shadow: none;
+    outline: none;
+}
+
+#header-section .nav-link {
+    color: #666777;
+    font-weight: 500;
+    position: relative;
+}
+
+#header-section .nav-link:hover, 
+#header-section .nav-link.active {
+    color: #000;
+}
+
+@media (min-width: 991px) {
+    #header-section #typewriter1 {
+        font-size: 1.5em;
+    }
+
+    #header-section #typewriter2 {
+        font-size: 1em; 
+    }
+
+    #header-section .nav-link::before {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        height: 2px;
+        background-color: #00b383;
+        visibility: hidden;
+        transition: 0.3s ease-in-out;
+    }
+
+    #header-section .nav-link:hover::before, 
+    #header-section .nav-link.active::before {
+        width: 100%;
+        visibility: visible;
+    }
+}
+
+#header-section .hero-section {
+    background-size: cover;
+    width: 100%;
+    height: 100vh;
+}
+
+#header-section .video-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+}
+
+#header-section .video-container video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+}
+
+#header-section .hero-section::before {
+    background-color: rgba(0, 0, 0, 0.6);
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+#header-section .hero-section .container {
+    height: 100vh;
+    z-index: 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+#header-section .hero-section h1 {
+    font-size: 1.5em;
+}
+
+#header-section .hero-section h2 {
+    font-size: 1.2em;
+}

@@ -7,4 +7,5 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('perfil/general/', views.perfil_general, name='perfil_general'), 
     path('perfil/cambiar-contrasena/', views.cambiar_contrasena, name='cambiar_contrasena'),
+    
 ]
