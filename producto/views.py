@@ -58,3 +58,5 @@ def ocultar_producto(request, producto_id):
     return redirect('lista_productos')
 
 
+def tarjeta(request):
+    return render(request, 'tarjeta.html')

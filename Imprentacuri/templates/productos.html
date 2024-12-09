@@ -227,6 +227,15 @@
 
 
         <script>
+            document.getElementById('checkout-btn').addEventListener('click', function() {
+                // Redirigir a la ruta deseada
+                window.location.href = "http://127.0.0.1:8000/productos/tarjetas/";
+            });
+        </script>
+        
+
+
+        <script>
             function mostrarMensajeCompra() {
                 const mensajeCompra = document.getElementById('mensaje-compra');
                 mensajeCompra.classList.remove('d-none'); // Muestra el mensaje
